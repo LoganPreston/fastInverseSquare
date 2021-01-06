@@ -2,9 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <string.h>
-#include <time.h>
 #include <sys/time.h>
+#include <time.h>
 
 typedef struct
 {
@@ -84,29 +83,31 @@ double runFastInverseSqrtTest2(float num, int iters, testStats_t *testStats)
 
 int main(void)
 {
-	int iters = 1000;
-	float end=100.0F;
+	int iters = 1000, testIters=100;
+	float maxFloat = 10;
+	float num;
 	testStats_t testBase;
 	testStats_t testFast;
 	testStats_t testFast2;
 
 	FILE *outFile = fopen("InverseTest.csv", "w");
 	//char *outStr="Number,Inverse Sqrt Time (sec), Inverse Sqrt Time (msec),Fast Sqrt Time (sec),Fast Sqrt Time (msec),Fast Sqrt Accuracy,Fast Sqrt 2 Iterations Time (sec),Fast Sqrt 2 Iterations Time (msec), Fast Sqrt 2 Iterations Accuracy\n";
-	char *outFormat = "%.1f,%d,%.5f,%d,%.5f,%.2f,%d,%.5f,%.2f\n";
+	char *outFormat = "%.2f,%d,%.5f,%d,%.5f,%.2f,%d,%.5f,%.2f\n";
 	fprintf(outFile, "Number,Inverse Sqrt Time (sec), Inverse Sqrt Time (usec),Fast Sqrt Time (sec),Fast Sqrt Time (usec),Fast Sqrt Accuracy,Fast Sqrt 2 Iterations Time (sec),Fast Sqrt 2 Iterations Time (usec), Fast Sqrt 2 Iterations Accuracy\n");
 	fprintf(stdout, "Number,Inverse Sqrt Time (sec), Inverse Sqrt Time (usec),Fast Sqrt Time (sec),Fast Sqrt Time (usec),Fast Sqrt Accuracy,Fast Sqrt 2 Iterations Time (sec),Fast Sqrt 2 Iterations Time (usec), Fast Sqrt 2 Iterations Accuracy\n");
 
-	for (float i = 0.1; i < end; i += 0.1)
+	for (int i = 0; i < testIters; i++)
 	{
-		runSqrtTest(i, iters, &testBase);
-		runFastInverseSqrtTest(i, iters, &testFast);
-		runFastInverseSqrtTest2(i, iters, &testFast2);
+		num = rand() / (float)(RAND_MAX / maxFloat); //rand num between 1 and the bound
+		runSqrtTest(num, iters, &testBase);
+		runFastInverseSqrtTest(num, iters, &testFast);
+		runFastInverseSqrtTest2(num, iters, &testFast2);
 
-		fprintf(outFile, outFormat, i, testBase.elapsed_sec, testBase.elapsed_msec,
+		fprintf(outFile, outFormat, num, testBase.elapsed_sec, testBase.elapsed_msec,
 				testFast.elapsed_sec, testFast.elapsed_msec, testFast.accuracy,
 				testFast2.elapsed_sec, testFast2.elapsed_msec, testFast2.accuracy);
 
-		fprintf(stdout, outFormat, i, testBase.elapsed_sec, testBase.elapsed_msec,
+		fprintf(stdout, outFormat, num, testBase.elapsed_sec, testBase.elapsed_msec,
 				testFast.elapsed_sec, testFast.elapsed_msec, testFast.accuracy,
 				testFast2.elapsed_sec, testFast2.elapsed_msec, testFast2.accuracy);
 
