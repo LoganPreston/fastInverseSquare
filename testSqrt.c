@@ -117,7 +117,6 @@ int main(void)
 				testFast2.elapsed_sec, testFast2.elapsed_msec, testFast2.accuracy);
 
 		//TODO write a function call that pass function into for running
-		//TODO think of a better way to loop this. Currently looping over tenths lowerBound to upperBound...
 	}
 
 	return 0;
