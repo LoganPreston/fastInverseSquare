@@ -12,7 +12,7 @@ typedef struct
 	double accuracy;
 } testStats_t;
 
-randRange(float upperBound)
+float randRange(float upperBound)
 {
 	return (rand() / (float)(RAND_MAX / upperBound)); //rand num between 0 and the bound
 }
@@ -88,8 +88,8 @@ double runFastInverseSqrtTest2(float num, int iters, testStats_t *testStats)
 
 int main(void)
 {
-	int iters = 1000, testIters = 100;
-	float upperBound = 10;
+	int squareRootIters = 1000, testIters = 100;
+	float upperBound = 100;
 	float num;
 	testStats_t testBase;
 	testStats_t testFast;
@@ -104,9 +104,9 @@ int main(void)
 	for (int i = 0; i < testIters; i++)
 	{
 		num = randRange(upperBound);
-		runSqrtTest(num, iters, &testBase);
-		runFastInverseSqrtTest(num, iters, &testFast);
-		runFastInverseSqrtTest2(num, iters, &testFast2);
+		runSqrtTest(num, squareRootIters, &testBase);
+		runFastInverseSqrtTest(num, squareRootIters, &testFast);
+		runFastInverseSqrtTest2(num, squareRootIters, &testFast2);
 
 		fprintf(outFile, outFormat, num, testBase.elapsed_sec, testBase.elapsed_msec,
 				testFast.elapsed_sec, testFast.elapsed_msec, testFast.accuracy,
