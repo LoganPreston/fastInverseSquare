@@ -2,7 +2,8 @@
 #ifndef FAST_INVERSE_SQRT_H
 
 #define FAST_INVERSE_SQRT_H
-float Q_rsqrt(float num);
-float Q_rsqrt2(float num);
+float basicInverseSqrt(float num);
 float Q_rsqrt_short(float num);
+float Q_rsqrt(float num);
+float Q_rsqrt_two_iter(float num);
 #endif

@@ -1,10 +1,17 @@
 #include <stdint.h>
+#include <math.h>
+
+float basicInverseSqrt(float num)
+{
+    return 1 / sqrt(num);
+}
+
 float Q_rsqrt_short(float num)
 {
-    int i = *(uint32_t *)&num;                      //floating point bit hack, use uint32_t or int, rather than long. Long takes time
-    i = 0x5f375a86 - (i >> 1);                      //magic - change from 0x*9df to 0x*a86, per Christ Lomont study
-    num = *(float *)&i;                             //back to float
-    
+    int i = *(uint32_t *)&num; //floating point bit hack, use uint32_t or int, rather than long. Long takes time
+    i = 0x5f375a86 - (i >> 1); //magic - change from 0x*9df to 0x*a86, per Christ Lomont study
+    num = *(float *)&i;        //back to float
+
     return num;
 }
 
@@ -13,23 +20,23 @@ float Q_rsqrt(float num)
     const float numHalf = num * 0.5F;
     const float threehalfs = 1.5F;
 
-    int i = *(uint32_t *)&num;                      //floating point bit hack, use uint32_t or int, rather than long. Long takes time
-    i = 0x5f375a86 - (i >> 1);                      //magic - change from 0x*9df to 0x*a86, per Christ Lomont study
-    num = *(float *)&i;                             //back to float
-    num = num * (threehalfs - numHalf * num * num); //1st iter
+    int i = *(uint32_t *)&num;                        //floating point bit hack, use uint32_t or int, rather than long. Long takes time
+    i = 0x5f375a86 - (i >> 1);                        //magic - change from 0x*9df to 0x*a86, per Christ Lomont study
+    num = *(float *)&i;                               //back to float
+    num = num * (threehalfs - (numHalf * num * num)); //1st iter
     return num;
 }
 
-float Q_rsqrt2(float num)
+float Q_rsqrt_two_iter(float num)
 {
     const float numHalf = num * 0.5F;
     const float threehalfs = 1.5F;
 
-    int i = *(uint32_t *)&num;                      //floating point bit hack, use uint32_t or int, rather than long. Long takes time
-    i = 0x5f375a86 - (i >> 1);                      //magic - change from 0x*9df to 0x*a86, per Christ Lomont study
-    num = *(float *)&i;                             //back to float
-    num = num * (threehalfs - numHalf * num * num); //1st iter
-    num = num * (threehalfs - numHalf * num * num); //2nd iter
+    int i = *(uint32_t *)&num;                        //floating point bit hack, use uint32_t or int, rather than long. Long takes time
+    i = 0x5f375a86 - (i >> 1);                        //magic - change from 0x*9df to 0x*a86, per Christ Lomont study
+    num = *(float *)&i;                               //back to float
+    num = num * (threehalfs - (numHalf * num * num)); //1st iter
+    num = num * (threehalfs - (numHalf * num * num)); //2nd iter
     return num;
 }
 
